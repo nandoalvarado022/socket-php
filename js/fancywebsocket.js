@@ -11,8 +11,7 @@ var FancyWebSocket = function(url)
 		return this;
 	};
 	
-	this.send = function(event_name, event_data)
-	{
+	this.send = function(event_name, event_data){
 		this.conn.send( event_data );
 		return this;
 	};
@@ -23,9 +22,8 @@ var FancyWebSocket = function(url)
 		this.conn = new MozWebSocket(url);
 		else
 		this.conn = new WebSocket(url);
-		
-		this.conn.onmessage = function(evt)
-		{
+
+		this.conn.onmessage = function(evt){
 			dispatch('message', evt.data);
 		};
 		
@@ -38,46 +36,26 @@ var FancyWebSocket = function(url)
 		this.conn.close();
 	};
 	
-	var dispatch = function(event_name, message)
-	{
-		if(message == null || message == "")//aqui es donde se realiza toda la accion
-			{
-			}
-			else
-			{
-				var JSONdata = JSON.parse(message); //parseo la informacion
-				console.log(JSONdata);
-
-				/*var JSONdata    = JSON.parse(message); //parseo la informacion
-				var tipo = JSONdata[0].tipo;
-				var mensaje = JSONdata[0].mensaje;
-				var fecha = JSONdata[0].fecha;
-				
-				var contenidoDiv  = $("#"+tipo).html();
-				var mensajehtml   = fecha+' : '+mensaje;
-				*/
-				$("div").append("Recibio");
-
-				
-			
-				//aqui se ejecuta toda la accion
-				
-				
-				
-				
-				
-				
-			}
+	var dispatch = function(event_name, datos){
+		if (event_name=="message") {
+			console.log(datos);
+			var datos = JSON.parse(datos); //parseo la informacion
+			$.ajax({
+				url: base_path+"ajax.php?case=show_count_user_online&nid="+datos.nid,
+				success:function(res){
+					$("#show_count_user_online").html(res);
+				}
+			})
+		}
 	}
 };
 
 var Server;
-function send( text ) {
-    Server.send( 'message', text );
+function send( datos ) {
+    Server.send( 'message', datos );
 }
 
-$(document).ready(function() 
-{
+$(document).ready(function(){
 	Server = new FancyWebSocket('ws://172.16.50.30:12345');
     Server.bind('open', function()
 	{
@@ -90,22 +68,4 @@ $(document).ready(function()
     });
     Server.connect();
 });
-
-
-
-function actualiza_mensaje(message){
-	console.log(message);
-	/*var JSONdata    = JSON.parse(message); //parseo la informacion
-	var tipo = JSONdata[0].tipo;
-	var mensaje = JSONdata[0].mensaje;
-	var fecha = JSONdata[0].fecha;
-	
-	var contenidoDiv  = $("#"+tipo).html();
-	var mensajehtml   = fecha+' : '+mensaje;
-	
-	$("#"+tipo).html(contenidoDiv+'0000111'+mensajehtml);*/
-}
-function actualiza_solicitud()
-{
-	alert("tipo de envio 2");
-}
+// setTimeout(check_user_online, 500);// Verificar usuarios en linea

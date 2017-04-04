@@ -20,6 +20,7 @@ function insertar()
 		{
 		 	document.write(data);
 		 	send(data);// array JSON
+		 	debugger;
 			// window.location.href = 'form.php'
 		}
 		});

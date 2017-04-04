@@ -1,7 +1,7 @@
 <?php 
 // include("clases/conect.php");
 $mysqli = new mysqli("172.16.50.142", "remoto", "remoto", "areacaribe");
-$resultado = $mysqli->query("SELECT ip FROM tbl_online_user ORDER BY ip ASC");
+$resultado = $mysqli->query("SELECT count(*) as count FROM tbl_online_user where ip='a'");
 // $res1 = mysql_query("SELECT * FROM mensajes WHERE tipo = '1' ");
 // $res2 = mysql_query("SELECT * FROM mensajes WHERE tipo = '2' ");
 // $res3 = mysql_query("SELECT * FROM mensajes WHERE tipo = '3' ");
@@ -16,19 +16,12 @@ $resultado = $mysqli->query("SELECT ip FROM tbl_online_user ORDER BY ip ASC");
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/fancywebsocket.js"></script>
 </head>
-
 <body>
-<div style="width:300px; height:200px; border:solid 1px #999999;float:left;">Martin<br />
 	<div id="1">
 		<?php 
-		// echo "<pre>"; print_r($resultado); echo "</pre>";
-		for ($num_fila = $resultado->num_rows - 1; $num_fila >= 0; $num_fila--) {
-			$resultado->data_seek($num_fila);
-			$fila = $resultado->fetch_assoc();
-			echo " id = " . $fila['ip'] . "\n";
-		}
+		$res = $resultado->fetch_assoc();
+		echo $res["count"];
 		?>
 	</div>
-</div>
 </body>
 </html>
